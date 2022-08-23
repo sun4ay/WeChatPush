@@ -1,5 +1,6 @@
 import requests
 from utils import print_info
+from datetime import date
 
 
 class API:
@@ -28,3 +29,21 @@ class API:
 
     def get_city(self):
         return self.config['city']
+
+    def get_chasing_drama(self) -> str:
+        videos = dict(self.config['videos'])
+        weekday = date.today().weekday() + 1
+        content = ""
+        for k, v in videos.items():
+            if weekday in v[0]:
+                content += (k + ", 今日" + v[1] + "点更新")
+        if content == "":
+            content = "今日没有你追的剧哦"
+        print_info("追剧提醒", content)
+        return content
+
+    def get_rainbow_pi(self):
+        content = requests.get("http://api.tianapi.com/caihongpi/index"
+                               f"?key={self.config['tianapi_token']}").json()["newslist"][0]['content']
+        print_info("彩虹屁", content)
+        return content

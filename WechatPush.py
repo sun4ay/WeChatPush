@@ -23,8 +23,8 @@ class WeChatPush:
             with open("config.cfg", encoding="utf-8", mode='r') as f:
                 self.config = dict(eval(f.read()))
             self.data = {"template_id": self.config['template_id'],
-                         'url': "http://weixin.qq.com/download",
-                         'topcolor': "#FF0000"}
+                         'url': "https://github.com/achieve-dream1221/WeChatPush",
+                         'topcolor': "#f091a0"}
         except FileNotFoundError:
             print_error("推送消息失败，请检查config.cfg文件是否与程序位于同一路径")
             exit_with_error()
