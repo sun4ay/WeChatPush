@@ -1,6 +1,6 @@
 # 微信测试公众号推送
 
-## 0. 按照依赖
+## 0. 安装依赖
 
 ```shell
 pip3 install -r .\requirements.txt
