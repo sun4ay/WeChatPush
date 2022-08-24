@@ -72,8 +72,6 @@ class API:
     def __get_birth_text(name: str, days: int):
         if days == 0:
             return f"今天是{name}的生日哦, 你备好礼物了吗?\n"
-        if days < 0:
-            return f"距离{name}的生日还有{-days}天\n"
         if 0 < days <= 10:
             return f"还有{days}天就是{name}的生日了, 赶快准备礼物吧!\n"
         if days > 10:
@@ -88,15 +86,19 @@ class API:
         i = 0
         content = ''
         for birth in births:
-            days = 0
             # 农历计算
             if birth.startswith("r"):
                 dt = datetime.strptime(birth[1:], "%Y-%m-%d")
                 next_birth_day = ZhDate(datetime.today().year, dt.month, dt.day)
                 days = next_birth_day - ZhDate.from_datetime(datetime.today())
+                if days < 0:
+                    next_birth_day = ZhDate(datetime.today().year + 1, dt.month, dt.day)
+                    days = next_birth_day - ZhDate.from_datetime(datetime.today())
             else:
                 d = datetime.strptime(birth, "%Y-%m-%d").date()
                 days = (date(date.today().year, d.month, d.day) - date.today()).days
+                if days < 0:
+                    days = (date(date.today().year + 1, d.month, d.day) - date.today()).days
             content += self.__get_birth_text(names[i], days)
             i += 1
         content = content[:-1]  # 去除最后一个换行符
