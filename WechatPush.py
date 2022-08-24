@@ -66,13 +66,25 @@ class WeChatPush:
                 print_error(response)
 
     # 放入数据
-    def put_send_data(self, key: str, value: str, color: str = None):
+    def put_send_data(self, keys: list[str], values: list[str], color: Color = None):
+        """
+        :param keys: 需要与模板对应的变量名相同, 多个变量名用英文分号隔开,, 例如["a", "b"]
+        :param values: 返回的字符串, 多个返回值,用英文分号隔开, 如["c","d"]
+        :param color: 模板的颜色, 默认为随机色, 可使用colors[index]进行指定颜色, 也可以使用#aabbcc形式
+        :return: None
+        """
         if color is None:
             color = get_random_color()
-        self.__send_data[key] = {
-            "value": value,
-            "color": color
-        }
+        if len(keys) != len(values):
+            print_error("put_send_data中key的个数与value的个数不等")
+            exit_with_error()
+        i = 0
+        for key in keys:
+            self.__send_data[key] = {
+                "value": values[i],
+                "color": color.value
+            }
+            i += 1
 
     # 运行
     def run(self):
