@@ -7,6 +7,9 @@ if __name__ == '__main__':
     api = API(wechatPush.get_config())
     # 参数说明wechatPush.put_send_data(keys即模板的变量名集合, values即需要替换模板的内容,
     # color即为模板的颜色, 可不传参, 即只需指定put_send_data(keys=[], values=[])
+    '''
+    此为模板二的配置
+    '''
     wechatPush.put_send_data(keys=["city", "weather", "max_temp", "min_temp", "current_temp", "current_window",
                                    "PM2_5", "air_quality", "sunrise", "sunset"],
                              values=api.get_weather(),
