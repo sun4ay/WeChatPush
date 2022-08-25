@@ -73,9 +73,10 @@ class WeChatPush:
         :param colors: 模板的颜色, 默认为随机色, 可使用[colors[index]]进行指定颜色, 也可以使用["#aabbcc"]形式
         :return: None
         """
-        keys_len, values_len, colors_len = len(keys), len(values), len(colors)
+        keys_len = len(keys)
         if colors is None:
             colors = get_random_colors(keys_len)
+        values_len, colors_len = len(values), len(colors)
         # 若提供的颜色不全, 则使用随机色代替
         if colors_len < keys_len:
             for _ in range(keys_len - colors_len):
