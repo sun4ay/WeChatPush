@@ -91,7 +91,7 @@ class API:
     def get_everyday_note():
         data = requests.get("http://open.iciba.com/dsapi/").json()
         # note: 汉语, content: 英语
-        content = data['note'] + "\n" + data['content']
+        content = data['note'] + data['content']
         print_info("词霸每日一句", content)
         return content
 

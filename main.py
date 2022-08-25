@@ -23,9 +23,9 @@ if __name__ == '__main__':
                              values=[api.get_love_message(), api.get_rainbow_pi(), api.get_dujitang()],
                              colors=[Color.Yellow, Color.Green, Color.Pink])
 
-    # wechatPush.put_send_data(keys=["meet_days"],
-    #                          values=[api.get_meet_days()],
-    #                          colors=[Color.Teal])
+    wechatPush.put_send_data(keys=["meet_days"],
+                             values=[api.get_meet_days()],
+                             colors=[Color.Teal])
 
     wechatPush.put_send_data(keys=['birthdays', "video"],
                              values=[api.get_birthdays_message(), api.get_chasing_drama()],
