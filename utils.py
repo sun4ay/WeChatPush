@@ -1,6 +1,6 @@
 import os
 import sys
-from random import choice
+from random import choice, choices
 from enum import Enum
 
 
@@ -23,12 +23,21 @@ class Color(Enum):
     Indigo = "#304ffe"
     LightBlue = "#0091ea"
     Teal = "#00bfa5"
-    LightGreen = "#64dd17"
+    Green = "#2ed573"
     Yellow = "#ffd600"
     Orange = "#ff6d00"
     Brown = "#3e2723"
+    Pink = "#e64980"
+    Grape = "#be4bdb"
+    Violet = "#7950f2"
+    Lime = "#82c91e"
 
 
 def get_random_color() -> Color:
     # return "#%06x" % randint(0, 0xFFFFFF)
     return choice(list(Color))
+
+
+# 返回随机颜色数组
+def get_random_colors(length: int) -> list[Color]:
+    return choices(list(Color), k=length)

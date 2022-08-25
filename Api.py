@@ -12,6 +12,14 @@ class API:
         # 中国上海时区
         self.tz = timezone("Asia/shanghai")
         self.today = datetime.today().astimezone(self.tz)
+        self.today_dt = datetime(self.today.year, self.today.month, self.today.day)
+
+    # 获取日期
+    def get_date(self) -> str:
+        weekdays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
+        content = f"{self.today.date()} {ZhDate.from_datetime(self.today_dt)} {weekdays[self.today.weekday()]}"
+        print_info("日期", content)
+        return content
 
     # 毒鸡汤
     @staticmethod
@@ -27,15 +35,24 @@ class API:
         print_info("情话", content)
         return content
 
-    # 天气
-    def get_weather(self) -> list[str]:
+    # 天气完整版
+    def get_weather_all(self) -> list[str]:
         data = requests.get(f"https://v2.alapi.cn/api/tianqi?token={self.config['alapi_token']}"
                             f"&city={self.config['city']}&province={self.config['province']}").json().get('data', {})
         content = [self.config['city'], data['weather'], data['max_temp'], data['min_temp'],
                    data['temp'], data['wind'], data['air_pm25'], data['aqi']['air_level'],
                    data['sunrise'], data['sunset']]
         # content = f"{data['weather']}, 当前温度: {data['temp']}℃, 最高温度: {data['max_temp']}℃, 最低温度: {data['min_temp']}℃"
-        print_info("天气", str(content))
+        print_info("天气完整版", str(content))
+        return content
+
+    # 天气精简版
+    def get_weather_simple(self) -> list[str]:
+        data = requests.get(f"https://v2.alapi.cn/api/tianqi?token={self.config['alapi_token']}"
+                            f"&city={self.config['city']}&province={self.config['province']}").json().get('data', {})
+        content = [self.config['city'],
+                   f"{data['weather']}, 当前温度: {data['temp']}℃, 最高温度: {data['max_temp']}℃, 最低温度: {data['min_temp']}℃"]
+        print_info("天气精简版", str(content))
         return content
 
     # 追剧模式
@@ -99,13 +116,12 @@ class API:
             # 农历计算
             if birth.startswith("r"):
                 # 由于设置了时区, 所以需要手动转换为新的datetime对象, 否则不支持减法操作
-                today_dt = datetime(self.today.year, self.today.month, self.today.day)
                 dt = datetime.strptime(birth[1:], "%Y-%m-%d")
                 next_birth_day = ZhDate(self.today.year, dt.month, dt.day)  # 农历生日转换为农历对象
-                days = next_birth_day - ZhDate.from_datetime(today_dt)  # 今天日期转换为农历日期
+                days = next_birth_day - ZhDate.from_datetime(self.today_dt)  # 今天日期转换为农历日期
                 if days < 0:  # 生日已过, 计算下一年
                     next_birth_day = ZhDate(self.today.year + 1, dt.month, dt.day)
-                    days = next_birth_day - ZhDate.from_datetime(today_dt)
+                    days = next_birth_day - ZhDate.from_datetime(self.today_dt)
             else:  # 阳历
                 dt = datetime.strptime(birth, "%Y-%m-%d")
                 # 用今年的生日日期 减去 今天的日期
